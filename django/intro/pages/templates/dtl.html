@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <h3>1. 반복문</h3>
+    {% for food in foods %}
+        <li>{{ food }}</li>
+    {% endfor %}
+
+    <!-- forloop의 counter로 반복문이 몇 번 반복되는지 확인 -->
+    {% for food in foods %}
+        <p>{{ forloop.counter }} {{ food }}</p>
+    {% endfor %}
+
+    <!-- empty list -->
+    {% for user in empty_list %}
+        <p>{{ user }}</p>
+
+    <!-- else문과 같은 기능 수행 -->
+    {% empty %}
+        <p>비어있는 리스트입니다.</p>
+    {% endfor %}
+    
+
+    <h3>2. 조건문</h3>
+    {% if '짜장면' in foods %}
+        <p>짜장면에는 고춧가루지!</p>
+
+    <!-- 장고에서는 주석처리하려면 %부분을 #으로 바꿈! -->
+    {# elif #}
+    {# else #}
+    {% endif %}
+
+    <!-- 반복과 조건 -->
+    {% for food in foods %}
+        <p>{{ forloop.counter }}번째 도는 중...</p>
+
+        {% if forloop.first %}
+            <p>짜짱면에는 고춧가루지!!</p>
+        {% else %}
+            <p>{{ food }}</p>
+        {% endif %}
+    {% endfor %}
+
+    <h3>3. filter 활용</h3>
+    <h4>(1) length filter</h4>
+
+    <!-- 파이프를 뜻하는 | 앞뒤로 띄어쓰기 없이 필터 사용 -->
+    {{ my_sentence|length }}
+
+    {% for message in messages %}
+        {% if message|length > 5 %}
+            <p>메시지가 너무 길어요...</p>
+        {% else %}
+            <p>{{ message }},  {{ message|length }}</p>
+        {% endif %}
+    {% endfor %}
+
+    <h4>(2) lower</h4>
+    <p>{{ 'ABC'|lower }}</p>
+
+    <h4>(3) title</h4>
+    <p>{{ my_sentence|title }}</p>
+
+    <h4>(4) random</h4>
+    <p>{{ foods|random }}</p>
+
+    <h4>(5) truncate(글자수 제한)</h4>
+
+    <!-- truncatewords:3은 3 단어 이상일 경우 4번째서부터는 ...으로 생략되서 출력 -->
+    <p>{{ my_sentence|truncatewords:3 }}</p>
+    <p>{{ my_sentence|truncatechars:3 }}</p>
+    <p>{{ my_sentence|truncatechars:10 }}</p>
+
+    <h4>(6) 연산</h4>
+    <p>{{ 4|add:6 }}</p>
+
+    <h4>(7) URL</h4>
+    <a href="https://google.com">Google!</a>
+    {{ 'naver.com'|urlize }}
+
+    <h3>4. 날짜 표현</h3>
+    <p>{{ datetimenow }}</p>
+
+    <!-- now를 사용했을 때는 UTC 시간 기준 -->
+    <!-- 한국 시간으로 바꾸고 싶다면 settings.py에서 TIME_ZONE = 'Asia/Seoul'(대륙/도시)로 변경하면 됨 -->
+    <p>{% now "DATETIME_FORMAT" %}</p>
+    <p>{% now "SHORT_DATETIME_FORMAT" %}</p>
+    <p>{% now "DATE_FORMAT" %}</p>
+    <p>{% now "SHORT_DATE_FORMAT" %}</p>
+
+    <!-- 포맷 커스터마이징 -->
+    <!-- strftime으로 검색하여 지정자 확인 -->
+    <p>{% now "Y년 m월 d일 (D) h:i" %}</p>
+
+    <!-- as를 이용해 변수에 저장해서 사용 가능 -->
+    <p>{% now "Y" as current_year%}</p>
+    <h4>Copyright {{ current_year }}</h4>
+
+    <!-- date filter -->
+    <p>{{ datenow|date:"SHORT_DATETIME_FORMAT" }}</p>
+
+    <h3>5. lorem</h3>
+    <p>{% lorem %}</p>
+
+    <!-- 3단어만 -->
+    <p>{% lorem 3 w %}</p>
+    <!-- 3단어를 랜덤하게 출력 -->
+    <p>{% lorem 3 w random %}</p>
+
+    <!-- 3단락 -->
+    <p>{% lorem 3 p %}</p>
+
+
+</body>
+</html>

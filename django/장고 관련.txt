@@ -1,0 +1,29 @@
+* 장고는 플라스크와 유사하지만 파일을 세분화하여 사용하는 것이 다름
+
+* 장고에서는 주로 세 파일을 사용(코딩 및 수정)
+   - urls.py
+   - views.py
+   - html 파일(ex. index.html)
+     -> views.py에서 함수를 정의할 때 보여줄 html 파일이름에 따라 index라는 html파일명은 바뀔 수 있음
+
+* 장고는 templates라는 폴더 안에서 html파일을 찾기 때문에 폴더명은 templates 그대로!!
+
+* 함수를 정의할 때 첫 번째 파라미터로 약속된 request란 변수는
+  장고 웹서버를 통해 요청을 했을 때 요청에 대한 모든 정보를 이 변수에 담아 넘겨줌
+
+* 장고에서 새로운 페이지를 만들 때 과정
+1. urls.py에서 path 설정 ( 플라스크에서 @app.route와 동일한 기능 )
+   ex) path('dinner/', views.dinner)
+
+2. views.py에서 함수 정의
+   ex) def dinner(request):
+	foods = ['초밥', '카레', '칼국수', '치킨', '김치찌개']
+	pick = random.choice(foods)
+	context = {
+	    'pick' : pick,
+    	}
+	return render(request, 'dinner.html', context)
+
+3. dinner.html 작성
+   -> html:5로 자동 완성 기능을 사용하여 body부분에 보여주고 싶은 내용 작성
+
