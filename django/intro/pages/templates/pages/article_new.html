@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/article_create/" method="POST">
+        <!-- 다른 사람의 악용을 막기 위해 csrf 토큰 설정 -->
+        {% csrf_token %}
+        
+        <!-- input 태그는 한 줄짜리만 가능 -->
+        <label for="">제목 : </label>
+        <input type="text" name="title"><br>
+        
+        <!-- textarea 태그는 여러 줄 가능 -->
+        <label for="">내용 : </label>
+        <textarea name="content" id="" cols="30" rows="10"></textarea><br>
+
+        <label for="">패스워드 : </label>
+        <input type="password" name="pwd">  # 옆 사람이 볼 수 없고 복사 붙여넣기가 안되도록 해줌
+
+        <input type="submit">
+    </form>
+</body>
+</html>

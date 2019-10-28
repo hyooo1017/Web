@@ -16,11 +16,23 @@ Including another URLconf
 
 # 어떤 주소로 접근할 때 어떤 내용을 보여줄건지 정의
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from . import views
 
-# settings.py 안의 INSTALLED_APPS에 작성된 순서대로 경로 작성
 urlpatterns = [
-    path('pages/', include('pages.urls')),
-    path('utils/', include('utils.urls')),
-    path('admin/', admin.site.urls),
+    # pages에 있는 views
+    path('index/', views.index),     # 플라스크에서 @app.route와 동일한 부분
+    path('dinner/', views.dinner),
+    path('hello/<str:name>/', views.hello),
+    path('introduce/<str:name>/<int:age>/', views.introduce),
+    path('multiple/<int:num1>/<int:num2>/', views.multiple),
+    path('dtl/', views.dtl),
+    path('birthday/', views.birthday),
+    path('throw/', views.throw),
+    path('catch/', views.catch),
+    path('lotto/', views.lotto),
+    path('generate/', views.generate),
+    path('article_new/', views.article_new),
+    path('article_create/', views.article_create),
+    path('static_example', views.static_example),
 ]

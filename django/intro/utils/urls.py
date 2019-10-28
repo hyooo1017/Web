@@ -16,11 +16,10 @@ Including another URLconf
 
 # 어떤 주소로 접근할 때 어떤 내용을 보여줄건지 정의
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
+from . import views
 
-# settings.py 안의 INSTALLED_APPS에 작성된 순서대로 경로 작성
 urlpatterns = [
-    path('pages/', include('pages.urls')),
-    path('utils/', include('utils.urls')),
-    path('admin/', admin.site.urls),
+    path('index/', views.index),
+    
 ]
