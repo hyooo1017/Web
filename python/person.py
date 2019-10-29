@@ -21,4 +21,3 @@ print(hyo.name)
 print(hyo.age)
 
 hyo.greeting()                  # 인스턴스 생성 후 greeting 등 class의 멤버 메서드는 인스턴스 메서드라고도 불림
-
