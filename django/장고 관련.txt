@@ -56,3 +56,57 @@
   settings.py의 INSTALLED_APPS에 경로 설정되어 있는 순서에 따라 같은 이름의 다른 파일이 경로로 잡힐 수 있음!!
    -> 그렇기 때문에 templates 폴더 안에 앱 이름과 같은 이름의 폴더를 생성하여 모든 html 파일은 그 폴더에 저장
 
+
+20191029
+<<<<< db 연결 >>>>>
+1. django에서 터미널에 django-admin startproject crud로 새로운 프로젝트 시작
+
+2. crud에서 python manage.py startapp articles로 어플 시작
+
+3. models.py에서 클래스를 생성하고 저장
+  (ex. class Article(models.Model):
+           # id = models.AutoField(primary_key = True)
+           title = models.CharField(max_length = 10)
+           content = models.TextField()
+           created_at = models.DateTimeField(auto_now_add = True)
+   )
+
+4. django/crud 터미널에서 python manage.py makemigrations 실행
+	Migrations for 'articles':
+	  articles\migrations\0001_initial.py
+	    - Create model Article
+   -> 이와 같이 모델 생성이 되었다고 뜸 ( 설계도 작성 )
+
+5. 클래스에 변수를 더 추가하고 저장하면 다시 터미널에서 python manage.py makemigrations 실행
+	Migrations for 'articles':
+	  articles\migrations\0002_auto_20191029_1117.py
+	    - Add field updated_at to article
+   -> 위 5번과 같이 추가되었다고 뜸
+
+6. 터미널에서 python manage.py migrate 라고 실행하면 주르르르륵 OK가 되며 실제 DB 테이블이 생성됨
+
+
+
+* 터미널에서 python manage.py shell 을 실행하면 장고 설정들이 저장되어 있는 터미널로써 사용 가능
+  ( python ~~~으로 실행하면 파이썬 코드만 실행 가능)
+
+1. from articles.models import Article로 내가 만든 클래스 임포트
+
+2. Article 을 치면 articles.models.Article이라고 알려줌
+
+3. article = Article() 로 객체를 생성한 후 article을 치면 <Article: Article object (None)>로 나옴
+
+4. article.id나 article.created_at을 치면 아직 저장이 되지 않았기 때문에 아무것도 뜨지 않음
+
+5. article.save()로 저장한 후 다시 article.id나 article.created_at을 실행하면 1이나 시간이 출력됨
+
+* Article(models.Model)에는 생성자가 포함되어 있기 때문에 객체를 생성할 때 값을 넣을 수 있음
+   (ex. article2 = Article(title = '두 번째', content = '두 번째 내용'))
+   -> article2.save()를 실행해야 생성한 객체 DB에 저장됨
+
+* article = Article.objects.create(title = '세 번째', content = '내용입니다!!!')로 DB에 저장까지 한 번에 할 수 있음
+
+* shell 종료는 exit()
+
+* Article.objects.all()로 DB에 저장된 객체를 모두 볼 수 있음 (쿼리형으로 보여짐)
+
