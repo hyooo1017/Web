@@ -1,7 +1,9 @@
 * 코드 터미널에서 manage.py 파일이 있는 폴더로 들어가서(ex. cd django/intro)
   python manage.py runserver로 서버 실행
 
+
 * 장고는 플라스크와 유사하지만 파일을 세분화하여 사용하는 것이 다름
+
 
 * 장고에서는 주로 세 파일을 사용(코딩 및 수정)
    - urls.py
@@ -9,10 +11,13 @@
    - html 파일(ex. index.html)
      -> views.py에서 함수를 정의할 때 보여줄 html 파일이름에 따라 index라는 html파일명은 바뀔 수 있음
 
+
 * 장고는 templates라는 폴더 안에서 html파일을 찾기 때문에 폴더명은 templates 그대로!!
+
 
 * 함수를 정의할 때 첫 번째 파라미터로 약속된 request란 변수는
   장고 웹서버를 통해 요청을 했을 때 요청에 대한 모든 정보를 이 변수에 담아 넘겨줌
+
 
 * 장고에서 새로운 페이지를 만들 때 과정
 1. urls.py에서 path 설정 ( 플라스크에서 @app.route와 동일한 기능 )
@@ -29,6 +34,7 @@
 
 3. dinner.html 작성
    -> html:5(!도 가능)로 자동 완성 기능을 사용하여 body부분에 보여주고 싶은 내용 작성
+
 
 * html 파일 제일 위에 {% load static %}를 작성하여 static 경로 사용
    -> pages 폴더에 static 폴더 생성
@@ -51,6 +57,7 @@
  (2) intro 안의 urls.py
    -> from django.urls import path, include로 수정
    -> path('pages/', include('pages.urls'))로 앱 urls.py 경로 추가 ( 각 앱 urls.py 모두 추가 )
+
 
 * 장고의 여러 앱에서 같은 이름의 html이 작성되어 templates에 저장되어 있다면
   settings.py의 INSTALLED_APPS에 경로 설정되어 있는 순서에 따라 같은 이름의 다른 파일이 경로로 잡힐 수 있음!!
@@ -89,7 +96,6 @@
 
 * 터미널에서 python manage.py shell 을 실행하면 장고 설정들이 저장되어 있는 터미널로써 사용 가능
   ( python ~~~으로 실행하면 파이썬 코드만 실행 가능)
-
 1. from articles.models import Article로 내가 만든 클래스 임포트
 
 2. Article 을 치면 articles.models.Article이라고 알려줌
@@ -100,13 +106,94 @@
 
 5. article.save()로 저장한 후 다시 article.id나 article.created_at을 실행하면 1이나 시간이 출력됨
 
+
 * Article(models.Model)에는 생성자가 포함되어 있기 때문에 객체를 생성할 때 값을 넣을 수 있음
    (ex. article2 = Article(title = '두 번째', content = '두 번째 내용'))
    -> article2.save()를 실행해야 생성한 객체 DB에 저장됨
 
+
 * article = Article.objects.create(title = '세 번째', content = '내용입니다!!!')로 DB에 저장까지 한 번에 할 수 있음
+
 
 * shell 종료는 exit()
 
+
 * Article.objects.all()로 DB에 저장된 객체를 모두 볼 수 있음 (쿼리형으로 보여짐)
+
+
+191030
+
+* 보안을 위해 글 작성할 때 폼 메서드를 POST로 수정
+1. <form action="/articles/create/" method="POST">
+
+2. 신원 확인을 위한 csrf 토큰
+    -> {% csrf_token %} 추가
+
+3. views.py에서 GET함수 모두 POST로 수정
+
+
+* index(기본) 페이지에서 새 글 작성할 수 있는 url 추가
+   (ex. <a href="/articles/new/">New Article</a>)
+
+
+* index(기본) 페이지에서 글의 제목만 보이게 하고 그 제목을 클릭하면 상세 내용을 보여주는 url 설정
+1. urls.py에서 path('<int:pk>/', views.detail),로 경로 추가
+    -> PK로 데이터 찾음
+
+2.  index.html의 제목 부분의 url을 PK값으로 설정
+    (ex. <a href="/articles/{{ article.pk }}">{{ article.title }}</a>)
+
+3. views.py에서 detail함수부분은 PK를 받아오는 코드 작성
+    (ex. article = Article.objects.get(pk=pk))
+
+
+* 본문 내용을 보여주는 상세페이지에서 index로 돌아갈 수 있게 url 추가
+   (ex. <a href="/articles/">Index로 돌아가기</a>)
+
+
+* 새 글을 작성하고 상세 페이지를 보여 줄 수 있도록 views.py에서 create함수 수정
+   -> 반환값을 render가 아닌 redirect로!!
+   -> PK값으로 해당 글 내용을 보여줘야 하므로 return redirect(f'/articles/{article.pk}/')로 작성!
+
+
+* 작성하여 저장된 글 삭제하는 기능
+1. urls.py에서 삭제하는 path('<int:pk>/delete', views.delete), 경로 추가
+
+2. views.py에서 PK로 글을 찾아 삭제하는 함수 작성
+	def delete(request, pk):
+	    article = Article.objects.get(pk=pk)
+	    article.delete()
+	    context = {
+	        'article' : article,
+	    }
+	    return redirect('/articles/')
+     -> delete 메서드를 이용하여 글을 삭제하고 기본 index 페이지로 돌아가게 함
+
+
+* 작성했던 글 수정하는 기능
+1. urls.py에서 수정할 페이지, 수정한 내용 update할 경로 추가
+    path('<int:pk>/edit/', views.edit),
+    path('<int:pk>/update/', views.update),
+
+2. views.py에서 PK를 통해 해당 글 찾아서 edit할 함수 작성
+     -> detail 함수와 동일한 내용
+
+3. update할 함수 작성
+     -> 먼저 pk를 통해 해당 글 찾기
+     -> edit로 넘어온 데이터 받기
+	title = request.POST.get('title')
+	content = request.POST.get('content')
+     -> 넘어온 데이터 article에 저장
+	article.title = title
+	article.content = content
+	article.save()
+     -> 수정한 내용 보여줄 수 있게 상세페이지로 이동할 수 있도록 redirect(f'/articles/{article.pk}/')로 반환
+
+4. detail.html에 수정 버튼 추가
+	<a href="/articles/{{ article.pk }}/edit">수정</a>
+
+5. edit.html은 new.html 내용과 흡사
+     -> form action을 "/articles/{{ article.pk }}/update/"로 하고
+     -> input 값에 value 추가
+         ( ex. <input type="text" name="title" value="{{ article.title }}">)
 
