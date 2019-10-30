@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h1>학생 목록</h1>
+
+<a href="/students/new/">학생 등록</a>
+
+<ul>
+        {% for student in students %}
+        <li>
+            <a href="/students/{{ student.pk }}">{{ student.name }}</a>
+        </li>
+        {% endfor %}
+</ul>
+
+{% endblock %}

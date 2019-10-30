@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h1>학생 등록 세부 내용</h1>
+
+<h2>이름 : {{ student.name }}</h2>
+<h4>나이 : {{ student.age }}</h4>
+
+<p>
+    {{ student.created_at }}<br>
+    {{ student.updated_at }}
+</p>
+
+<a href="/students/{{ student.pk }}/edit">수정하기</a>
+<a href="/students/{{ student.pk }}/delete">삭제하기</a><br>
+
+<a href="/students/">학생 목록으로 돌아가기</a>
+
+{% endblock %}
