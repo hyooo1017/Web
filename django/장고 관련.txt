@@ -197,3 +197,26 @@
      -> input 값에 value 추가
          ( ex. <input type="text" name="title" value="{{ article.title }}">)
 
+
+191031
+* URL 이름 설정
+1. urls.py에서 경로 설정할 때 이름 설정함
+   (ex. path('', views.index, name='index'),)
+
+2. views.py에서 redirect로 경로를 재설정하는 경우에 redirect('index')로 작성
+
+3. html 파일 내에서 url 설정을 할 때 /students/new/ 대신 {% url 'new' %}로 작성
+
+
+* App 이름 설정
+1. urls.py에서 app_name = 'students'으로 앱 이름을 선언!
+
+2. view.py에서는 url과 앱 이름을 설정하였을 때 'students:index'로 경로 설정
+
+3. html에서 {% url 'app_name:path_name' %}로 주소 설정
+   (ex. {% url 'students:new' %})
+
+
+* RESTful
+1. 
+

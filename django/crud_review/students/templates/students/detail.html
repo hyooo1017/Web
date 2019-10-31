@@ -12,9 +12,15 @@
     {{ student.updated_at }}
 </p>
 
-<a href="/students/{{ student.pk }}/edit">수정하기</a>
-<a href="/students/{{ student.pk }}/delete">삭제하기</a><br>
+<a href="{% url 'students:edit' student.pk %}">수정하기</a>
 
-<a href="/students/">학생 목록으로 돌아가기</a>
+<!-- a 태그는 POST 요청 보낼 수 없습니다. 그렇다면 form 태그! -->
+<!-- <a href="{% url 'students:delete' student.pk %}">삭제하기</a><br> -->
+<form action="{% url 'students:delete' student.pk %}" method="POST">
+    {% csrf_token %}
+    <input type="submit" value="삭제하기">
+</form>
+
+<a href="{% url 'students:index' %}">학생 목록으로 돌아가기</a>
 
 {% endblock %}
