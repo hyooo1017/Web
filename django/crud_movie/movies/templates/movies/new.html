@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block body %}
+<h1>영화 정보 생성</h1>
+
+<form action="{% url 'create' %}" method="POST">        
+
+    {% csrf_token %}
+    <label for="">영화 제목 : </label>
+    <input type="text" name="title"><br>
+    
+    <label for="">영화 제목(영문) : </label>
+    <input type="text" name="title_en"><br>
+
+    <label for="">누적 관객수 : </label>
+    <input type="number" name="audience"><br>
+ 
+    <label for="">개봉일 : </label>
+    <input type="date" name="open_date"><br>
+ 
+    <label for="">장르 : </label>
+    <input type="text" name="genre"><br>
+ 
+    <label for="">관람 등급 : </label>
+    <input type="text" name="watch_grade"><br>
+ 
+    <label for="">평점 : </label>
+    <input type="number" step="0.01" name="score"><br>
+
+    <label for="">포스터 이미지 URL : </label>
+    <input type="text" name="poster_url"><br>
+    
+    <label for="">영화 소개 : </label>
+    <textarea name="description" id="" cols="50" rows="10"></textarea><br>
+
+    <input type="submit">
+</form>
+
+{% endblock %}

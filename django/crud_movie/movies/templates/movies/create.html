@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+<h2>영화 정보 생성이 완료되었습니다.</h2>
+
+<a href="{% url 'detail' movie.pk %}">영화 정보 조회</a>
+
+{% endblock %}
