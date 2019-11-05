@@ -11,6 +11,9 @@ urlpatterns = [
     path('<int:pk>/delete/', views.delete, name='delete'), # POST /students/1/delete/
     path('<int:pk>/edit/', views.edit, name='edit'), # GET /students/1/edit/
 #   path('<int:pk>/update/', views.update, name='update'), # POST /students/1/update/ (X) -> update도 자원이 아니고 행위이므로
+    path('<int:student_pk>/comments/new/', views.comments_new, name='comments_new'),
+    path('<int:student_pk>/comments/<int:pk>/delete/', views.comments_delete, name='comments_delete'), # POST /students/1/comments/1/delete/
+    path('<int:student_pk>/comments/<int:pk>/edit/', views.comments_edit, name='comments_edit'),
 ]
 
 # URL Name

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Student
+from .models import Student, Comment
 
 # Create your views here.
 def index(request):
@@ -38,7 +38,7 @@ def detail(request, pk):
     return render(request, 'students/detail.html', context)
 
 def delete(request, pk):
-    if request.method = 'POST':
+    if request.method == 'POST':
         student = Student.objects.get(pk=pk)
         student.delete()
         context = {
@@ -84,3 +84,43 @@ def edit(request, pk):
 #     }
 #     return redirect('students:detail', student.pk)     # detail 페이지로 redirect
 
+# POST 요청을 받음 -> redirect
+def comments_new(request, student_pk):
+    # 1. request에서 데이터 가져오기
+    content = request.POST.get('content')
+
+    # 2. Comment 생성
+    comment = Comment()
+    comment.content = content
+    comment.student_id = student_pk
+    comment.save()
+    
+    # 3. student 상세 페이지로 redirect
+    return redirect('students:detail', student_pk)
+
+# POST 요청을 받음
+def comments_delete(request, student_pk, pk):
+    comment = Comment.objects.get(pk=pk)
+    comment.delete()
+    return redirect('students:detail', student_pk)
+
+
+def comments_edit(request, student_pk, pk):
+    comment = Comment.objects.get(pk=pk)
+    if request.method == 'POST':
+        # POST
+        # 1. POST로 넘어온 데이터 가져오기
+        content = request.POST.get('content')
+
+        # 2. comment에 바꿔 넣기 & 저장
+        comment.content = content
+        comment.save()
+
+        # 3. student 상세 페이지로 redirect
+        return redirect('students:detail', student_pk)
+    else:
+        # GET
+        context = {
+            'comment': comment,
+        }
+        return render(request, 'students/comments_edit.html', context)
