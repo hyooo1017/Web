@@ -31,9 +31,11 @@ def new(request):
 
 def detail(request, pk):
     student = Student.objects.get(pk=pk)
-       
+    comments = student.comment_set.all()
+
     context = {
         'student' : student,
+        'comments' : comments,
     }
     return render(request, 'students/detail.html', context)
 
