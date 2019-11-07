@@ -14,8 +14,9 @@ def new(request):
     if request.method == 'POST':     # def create
         name = request.POST.get('name')
         age = request.POST.get('age')
+        image = request.FILES.get('image')
 
-        student = Student.objects.create(name = name, age = age)
+        student = Student.objects.create(name = name, age = age, image=image)
         return redirect('students:detail', student.pk) 
 
     else:
@@ -54,14 +55,14 @@ def edit(request, pk):
     if request.method == 'POST':        # def update
         name = request.POST.get('name')
         age = request.POST.get('age')
+        image = request.FILES.get('image')
         
         student.name = name
         student.age = age
+        if image:
+            student.image = image
         student.save()
 
-        context = {
-            'student' : student,
-        }
         return redirect('students:detail', student.pk)
 
     else:                               # def edit
