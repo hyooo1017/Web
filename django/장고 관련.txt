@@ -220,3 +220,10 @@
 * RESTful
 1. 
 
+
+
+
+<<관리자모드 실행>>
+* python manage.py createsuperuser으로 관리자 생성
+	-> 서버에서 /admin 실행하면 관리자 페이지 확인 가능
+
