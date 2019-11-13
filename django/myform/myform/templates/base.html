@@ -9,14 +9,17 @@
 <body>
     <nav>
         <span>{{ user.username }}</span>
-        {% if user.is_authenticated %}        
+        {% if user.is_authenticated %}        <!-- 로그인 되어 있을 때만 실행 -->
         <form action="{% url 'accounts:logout' %}" method="POST">
             {% csrf_token %}
             <input type="submit" value="로그아웃!">
         </form>
+        <a href="{% url 'accounts:edit' %}">회원 정보 수정</a>
+
         {% else %}
         <a href="{% url 'accounts:login' %}">로그인!</a>
         <a href="{% url 'accounts:signup' %}">회원가입!</a>
+        
         {% endif %}
     </nav>
     {% block body %}

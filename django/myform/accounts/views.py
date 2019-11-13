@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 from django.contrib.auth import login as auth_login     # 밑에 정의된 login과 구별하기 위해
 from django.contrib.auth import logout as auth_logout
+from .forms import CustomUserChangeForm
 
 # Create your views here.
 def signup(request):
@@ -18,10 +19,8 @@ def signup(request):
         if form.is_valid():
             # 3. 회원 생성!
             user = form.save()
-
             # 3-1. 로그인!
             auth_login(request, user)
-
             # 4. redirect -> 마이페이지 (articles index)
             return redirect('articles:index')
     else:
@@ -31,7 +30,6 @@ def signup(request):
     context = {
         'form' : form,
     }
-
     return render(request, 'accounts/signup.html', context)
 
 def login(request):
@@ -48,7 +46,6 @@ def login(request):
         if form.is_valid():
             # 3. 로그인 수행
             auth_login(request, form.get_user())
-
             # 4. redirect -> 메인 페이지 (articles index)
             return redirect('articles:index')
     else:
@@ -68,14 +65,32 @@ def logout(request):
         return redirect('articles:index')
 
 def edit(request):
-    if request.user.is_authenticated:
-        form = UserChangeForm()
-        context = {
-            'form' : form,
-        }
+    if request.method == 'POST':
+        # 회원 정보 수정
+        # 1. POST로 넘어온 데이터 Form에 입력
+        form = CustomUserChangeForm(request.POST, instance=request.user)
 
-        return render(request, 'accounts/edit.html', context)
+        # 2. 검증
+        if form.is_valid():
+            # 3. 저장
+            form.save()
+            # 4. redirect -> 메인 (articles index)
+            return redirect('articles:index')
+    else:
+        # 회원 정보 수정 Form 보여줌
+        form = CustomUserChangeForm(instance=request.user)  # 현재 값 자동으로 채워져 있음
 
+    context = {
+        'form' : form,
+    }
+    return render(request, 'accounts/edit.html', context)
+
+# POST 요청만 받음
+def delete(request):
+    if request.method == 'POST':
+        # User 삭제
+        request.user.delete()
+        return redirect('articles:index')
 
 # Signup vs. Login
 # 1. Signup
