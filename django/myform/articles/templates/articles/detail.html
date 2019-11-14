@@ -10,4 +10,9 @@
 <p>created at: {{ article.created_at }}</p>
 <p>updated at: {{ article.updated_at }}</p>
 
+
+<div>
+    <a href="{% url 'articles:index' %}">List</a>
+    <a href="{% url 'articles:edit' article.pk %}">Edit</a>
+</div>
 {% endblock %}
