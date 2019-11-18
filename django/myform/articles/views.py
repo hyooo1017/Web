@@ -40,7 +40,6 @@ def new(request):
     }
     return render(request, 'articles/new.html', context)
 
-@login_required
 def detail(request, pk):
     # 1. pk번째 데이터를 가져오기
     article = Article.objects.get(pk=pk)
@@ -78,3 +77,17 @@ def edit(request, pk):
         'article_form': article_form,
     }
     return render(request, 'articles/new.html', context)
+
+# POST 요청만 받음
+@login_required
+def like(request, pk):
+    # 1. pk번 article 가져오기
+    article = Article.objects.get(pk=pk)
+    # 2. 현재 로그인한 User가 이 article에 좋아요를 눌렀는지?
+    if request.user in article.like_users.all():
+        # 3-1. 좋아요 취소
+        article.like_users.remove(request.user)
+    else:
+        # 3-2. 좋아요
+        article.like_users.add(request.user)
+    return redirect('articles:detail', article.pk)
