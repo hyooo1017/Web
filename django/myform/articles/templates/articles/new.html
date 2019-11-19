@@ -1,17 +1,28 @@
 {% extends 'base.html' %}
 
+{% load bootstrap4 %}
+
 {% block body %}
 
 <h1>Article Form</h1>
 
 <form action="" method="POST">
     {% csrf_token %}
+
     <!-- <label for="">Title: </label>
     <input type="text" name="title">
     <label for="">Content: </label>
     <textarea name="content" id="" cols="30" rows="10"></textarea> -->
-    {{ article_form.as_p }}
-    <input type="submit">
+    <!-- {{ article_form.as_p }} -->
+
+    <!-- bootstrap으로 꾸미기! -->
+    {% bootstrap_form article_form %}
+    {% buttons submit='작성하기' %}
+        <!-- 추가버튼 생성 가능 -->
+        <!-- <input type="submit" class='btn'> -->
+    {% endbuttons %}
+
+    <!-- <input type="submit"> -->
 </form>
 
 {% endblock %}

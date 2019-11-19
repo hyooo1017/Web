@@ -15,9 +15,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.shortcuts import redirect
+
+# 내서버로 바로 접속했을 때 Page not found(404)가 안뜨게!
+# def root(request):
+#     return redirect('articles:index')
 
 urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('articles/', include('articles.urls')),
     path('admin/', admin.site.urls),
+    # 메인페이지 설정
+    path('', lambda r: redirect('articles:index'), name='root')        # 주로 urls.py에는 함수를 따로 정의하지 않으므로 lambda로 연결
 ]
+
